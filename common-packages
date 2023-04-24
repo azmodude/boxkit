@@ -8,6 +8,7 @@ curl
 diffutils
 dnf-plugins-core
 findutils
+kitty-terminfo
 gnupg2
 less
 lsof

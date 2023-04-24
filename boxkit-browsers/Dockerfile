@@ -14,6 +14,10 @@ RUN dnf --assumeyes update && \
     rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc && \
     dnf clean all
 
-COPY ./common-packages ./boxkit-browsers/packages /
-RUN grep -vh '^#' common-packages packages | xargs dnf --assumeyes install && \
+COPY ./common-packages /
+RUN grep -vh '^#' common-packages | xargs dnf --assumeyes install && \
     dnf clean all
+# deliberately creating separate layers here. Changes are, sometimes caches might hit
+RUN dnf install --assumeyes google-chrome-stable
+RUN dnf install --assumeyes vivaldi
+RUN dnf install --assumeyes brave-browser

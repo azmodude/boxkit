@@ -36,7 +36,7 @@ jobs:
         id: meta
         with:
           images: |
-            ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
+            ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/azmodude/boxkit/main/README.md
           tags: |
@@ -55,6 +55,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v4
+        id: docker_build
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -67,9 +68,9 @@ jobs:
       - uses: sigstore/cosign-installer@v3.0.2
       - name: Sign container image
         run: |
-          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${TAGS}
+          cosign sign -y --key env://COSIGN_PRIVATE_KEY ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}@${DIGEST}
         env:
-          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.docker_build.outputs.digest }}
           COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
           COSIGN_PASSWORD: ${{secrets.COSIGN_PASSWORD}}
 

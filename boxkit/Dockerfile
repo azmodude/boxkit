@@ -14,8 +14,8 @@ RUN dnf --assumeyes copr enable atim/starship && \
         dnf --assumeyes copr enable awood/bat-extras && \
         dnf --assumeyes update && \
         dnf clean all
-COPY packages /
-RUN grep -v '^#' packages | xargs dnf --assumeyes install && \
+COPY ./common-packages ./boxkit/packages /
+RUN grep -vh '^#' common-packages packages | xargs dnf --assumeyes install && \
     dnf --assumeyes install https://github.com/twpayne/chezmoi/releases/download/v${CHEZMOI_VERSION}/chezmoi-${CHEZMOI_VERSION}-$(uname -m).rpm && \
     dnf clean all
 

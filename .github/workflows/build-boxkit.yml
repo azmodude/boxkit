@@ -36,7 +36,7 @@ jobs:
         id: meta
         with:
           images: |
-            ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
+            ${{ env.IMAGE_NAME }}
           labels: |
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/azmodude/boxkit/main/README.md
 
@@ -89,8 +89,10 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
+          context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.IMAGE_TAGS }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
         # Temp fix

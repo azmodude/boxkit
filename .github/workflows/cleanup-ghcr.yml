@@ -1,0 +1,24 @@
+---
+name: cleanup-ghcr
+on:
+  workflow_run:
+    workflows: [build-boxkit, build-boxkit-browsers]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  cleanup-ghcr:
+    name: Cleanup GHCR based on retention
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Do cleanup for boxkit images
+        uses: snok/container-retention-policy@v2
+        with:
+          account-type: personal
+          image-names: boxkit*
+          cut-off: A week ago UTC
+          timestamp-to-use: updated_at
+          keep-at-least: 2
+          skip-tags: latest
+          token: ${{ secrets.DELETE_PAT }}

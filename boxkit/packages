@@ -1,9 +1,8 @@
-#age
-#atuin
-#btop
+age
+ansible
+btop
 bat
 bat-extras
-#chezmoi
 #clipboard
 #cosign
 #dbus-x11
@@ -14,11 +13,9 @@ fd-find
 #ffmpeg
 fzf
 gh
-#helix
 just
 lazygit
 make
-#micro
 ncdu
 #ncurses
 neofetch
@@ -26,6 +23,7 @@ neovim
 npm
 #plocate
 python3
+renameutils
 ripgrep
 #speedtest-cli
 starship
